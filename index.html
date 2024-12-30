@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pratique Inglês</title>
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f8f9fa;
+      color: #212121;
+    }
+    header {
+      background-color: #4285f4;
+      color: white;
+      padding: 16px;
+      font-size: 24px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background-color: #f1f3f4;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 100%;
+	  font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+      animation: correct-glow 1s ease-in-out;
+    }
+    .incorrect {
+      color: red;
+      font-weight: bold;
+      animation: incorrect-shake 0.3s;
+    }
+    .fade-out {
+      animation: fadeOut 0.5s forwards;
+    }
+.examples {
+background-color: #f9f9f9;
+padding: 15px;
+border-radius: 4px;
+box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
+margin-top: 10px;
+}
+.examples p {
+margin: 10px 0;
+}
+.examples .definition {
+font-weight: bold;
+color: #333;
+}
+	.controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .timer {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4285f4;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+	.accuracy {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    footer {
+      background-color: #f1f3f4;
+      color: #212121;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    }
+	.congratulations {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 20px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeInScale 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+ .advertisement {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #ff9800;
+      color: white;
+      padding: 10px;
+      font-size: 14px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+  </style>
+</head>
+<body>
+  <header>100 palavras em Inglês mais usadas no dia a dia</header>
+  <main>
+    <div class="controls">
+      <div class="timer">Tempo: <span id="timer">0:00</span></div>
+	  <div class="accuracy"><span id="accuracy">Acertos: 0/4 (0%)</span></div>
+      <button id="reset-timer">Resetar Timer</button>
+    </div>
+    <table>
+      <thead id="table-head">
+        <tr>
+          <th>Inglês</th>
+          <th>Português</th>
+        </tr>
+      </thead>
+      <tbody id="word-list">
+        <!-- As palavras serão carregadas aqui -->
+      </tbody>
+    </table>
+  </main>
+  <div id="congratulations" class="congratulations">
+	  Parabéns! Você concluiu todas as palavras! 🎉
+	</div>
+	<div id="advertisement" class="advertisement">
+	Lançamento exclusivo no dia 31 de janeiro de 2025!!!<br/>
+    Entre já na lista de espera do aplicativo que vai turbinar seu aprendizado prático de Inglês.<br/>
+    <a href="https://wa.me/5545999380856" target="_blank">Envie um "eu quero" para nosso Whatsapp</a>
+  </div>
+  <script>
+    const words = [
+  {
+        english:"a",
+        portuguese:["um", "uma", "por", "cada", "em"],
+        examples:[]
+},
+{
+        english:"about",
+        portuguese:["sobre", "a respeito de", "cerca de", "por volta de", "quase", "em torno de"],
+        examples:[]
+},
+{
+        english:"all",
+        portuguese:["tudo", "todo", "toda", "todos", "todas", "completamente", "inteiramente"],
+        examples:[]
+},
+{
+        english:"also",
+        portuguese:["também", "além disso", "igualmente"],
+        examples:[]
+}
+];
+
+    const tableBody = document.getElementById("word-list");
+    const timerElement = document.getElementById("timer");
+    const accuracyElement = document.getElementById("accuracy");
+    const resetButton = document.getElementById("reset-timer");
+
+    let startTime = null;
+    let timerInterval = null;
+    let correctCount = 0;
+
+	function updateAccuracy() {
+      const percentage = words.length > 0 ? ((correctCount / words.length) * 100).toFixed(2) : 0;
+      console.log(words.length)
+	  console.log(correctCount)
+	  accuracyElement.textContent = `Acertos: ${correctCount}/${words.length} (${percentage}%)`;
+    }
+
+
+    function startTimer() {
+      if (!startTime) {
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+      }
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function resetTimer() {
+      startTime = null;
+      clearInterval(timerInterval);
+      timerElement.textContent = "0:00";
+      correctCount = 0;
+      updateAccuracy();
+      loadTable();
+    }
+
+    function updateTimer() {
+      const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = Math.floor(elapsedTime / 60);
+      const seconds = elapsedTime % 60;
+      timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    resetButton.addEventListener("click", resetTimer);
+
+    function loadTable() {
+  tableBody.innerHTML = "";
+
+  words.forEach((word, index) => {
+    const row = document.createElement("tr");
+    row.setAttribute("id", `row-${index}`);
+    row.innerHTML = `
+      <td><span class="word" data-index="${index}">${word.english}</span></td>
+      <td><input type="text" id="input-${index}" /></td>
+    `;
+    tableBody.appendChild(row);
+
+    const inputField = document.getElementById(`input-${index}`);
+    inputField.addEventListener("input", startTimer);
+    inputField.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        const inputValue = inputField.value.trim().toLowerCase();
+        if (word.portuguese.includes(inputValue)) {
+          inputField.classList.add("correct");
+          inputField.classList.remove("incorrect");
+
+
+          // Remover a linha de exemplos (se existir)
+          const exampleRow = document.getElementById(`examples-${index}`);
+          if (exampleRow) {
+            exampleRow.remove();
+          }
+
+          // Remover a linha da palavra
+          row.classList.add("fade-out");
+          setTimeout(() => {
+            row.remove();
+
+            // Focar no próximo campo, se existir
+            const nextInput = document.querySelector(`#input-${index + 1}`);
+            if (nextInput) nextInput.focus();
+          }, 500);
+
+          correctCount++;
+		  updateAccuracy();
+          if (correctCount === words.length) {
+			stopTimer();
+            document.getElementById("table-head").style.display = "none"; // Remove o cabeçalho
+			
+			// Mostra a mensagem de parabéns
+          const congratulations = document.getElementById("congratulations");
+          congratulations.style.display = "block";
+
+          // Esconde a mensagem automaticamente após alguns segundos
+          setTimeout(() => {
+            congratulations.style.display = "none";
+          }, 5000);
+		  }
+        } else {
+          inputField.classList.add("incorrect");
+        }
+      }
+    });
+
+    row.querySelector(".word").addEventListener("click", function () {
+      toggleExamples(index, row, word.examples);
+    });
+  });
+}
+
+
+    function toggleExamples(index, row, examples) {
+  const existingExamples = document.getElementById(`examples-${index}`);
+  if (existingExamples) {
+    existingExamples.remove();
+  } else {
+    const exampleRow = document.createElement("tr");
+    exampleRow.setAttribute("id", `examples-${index}`);
+    exampleRow.innerHTML = `<td colspan="2" class="examples">
+      ${examples.map(ex => `
+        <p class="definition">${ex.definition}</p>
+        <p>Exemplo: ${ex.en} → ${ex.pt}</p>
+      `).join("")}
+    </td>`;
+    row.insertAdjacentElement("afterend", exampleRow);
+  }
+}
+    window.onload = function() {
+      loadTable();
+    };
+  </script>
+</body>
+</html>
